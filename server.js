@@ -15,10 +15,10 @@ var msgArr = [];
 io.on('connection', function(socket){
 
   msgArr.forEach(function(r){    
-    io.to(socket.id).emit('receive message', r.name + ' : ' + r.text);
+    io.to(socket.id).emit('receive message', r);
   })
 
-  console.log('user connected : ' , socket.id);
+  // console.log('user connected : ' , socket.id);
   var name = "user" + count++;
   io.to(socket.id).emit('change name', name);
 
@@ -27,12 +27,8 @@ io.on('connection', function(socket){
   });
 
   socket.on('send message', function(name, text){
-    msgArr.push({
-      name: name,
-      text: text
-    })
     var msg = name + ' : ' + text;
-    console.log(msg);
+    msgArr.push(msg);
     io.emit('receive message', msg);
   });
 
